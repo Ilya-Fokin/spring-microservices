@@ -1,0 +1,9 @@
+application:
+  kafka:
+    topic: "message-topic"
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: "localhost:9092"
+      client-id: "message-producer"
