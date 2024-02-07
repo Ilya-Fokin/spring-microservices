@@ -3,6 +3,7 @@ package com.example.consumer.configs;
 import com.example.consumer.dto.DataDto;
 import com.example.consumer.models.Data;
 import com.example.consumer.services.DataServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -16,11 +17,16 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.support.JacksonUtils;
+import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.messaging.handler.annotation.Payload;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.springframework.kafka.support.serializer.JsonDeserializer.TYPE_MAPPINGS;
+
 
 @Slf4j
 @Configuration
@@ -47,11 +53,12 @@ public class Config {
         private DataServiceImpl dataService;
 
         @KafkaListener(
-                topics = "${application.kafka.topic}"
+                topics = "${application.kafka.topic}",
+                containerFactory = "kafkaListenerContainerFactory"
         )
-        public void listener(@Payload DataDto data) {
+        public void listener(@Payload Data data) {
             log.info("Получено сообщение: {}", data.toString());
-            //dataService.save(data);
+            dataService.save(data);
         }
     }
 

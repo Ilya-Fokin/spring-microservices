@@ -1,6 +1,5 @@
 package com.example.consumer.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,12 +18,14 @@ public class Data {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String word;
 
     @Override
     public String toString() {
         return "Data{" +
-                "word='" + word + '\'' +
+                "it=" + id +
+                ", word='" + word + '\'' +
                 '}';
     }
 }
